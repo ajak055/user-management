@@ -16,10 +16,21 @@ const logger = bunyan.createLogger({name: process.env.MODULE});
 async function createUser(request, response){
     try{
         logger.info("createUser function invoked")
-        const result = userBusiness.createUser(request, logger);
-        successResponse(response, result, 201, logger);
+        const result = await userBusiness.createUser(request, logger);
+        successResponse(response, result.data, result.code, logger);
     }catch(error){
         logger.error("API error: error in createUser API "+error.message)
+        failureResponse(response, error.message, error.code, logger)
+    }
+}
+
+async function fetchUser(request, response){
+    try{
+        logger.info("fetchUser function invoked")
+        const result = await userBusiness.fetchUser(request, logger);
+        successResponse(response, {users: result.data}, result.code, logger);
+    }catch(error){
+        logger.error("API error: error in fetchUser API "+error.message)
         failureResponse(response, error.message, error.code, logger)
     }
 }
@@ -29,11 +40,11 @@ async function createUser(request, response){
 
 app.post(`${baseUrl}`, createUser)
 
-app.get(`${baseUrl}`, createUser)
+app.get(`${baseUrl}`, fetchUser)
 
-app.put(`${baseUrl}`, createUser)
+/*app.put(`${baseUrl}`, updateUser)
 
-app.delete(`${baseUrl}`, createUser)
+app.delete(`${baseUrl}`, deleteUser) */
 
 
 app.listen(process.env.PORT, () => {
