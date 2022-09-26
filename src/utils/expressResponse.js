@@ -1,5 +1,5 @@
 
-const successResponse =  (response, body, code=200, logger)=>{
+const successResponse =  (response, body, logger, code=200)=>{
     logger.info("success response invoked")
     return response.status(code).send(body)
 }

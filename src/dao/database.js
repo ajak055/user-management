@@ -12,9 +12,7 @@ async function createUserDocument(userRecord, logger){
 
 async function fetchUserDocument(userRecord, logger){
     logger.info("Data: fetchUserDocument invoked")
-    sqlQuery = `SELECT * FROM `+config.MYSQL_USER_TABLE;
-    logger.info("sql query "+sqlQuery)
-    return await mysqldb.fetchRecord(sqlQuery, logger);
+    return await mysqldb.fetchRecord(userRecord, logger);
 }
 
 module.exports = {

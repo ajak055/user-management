@@ -1,11 +1,12 @@
 const data = require("../dao/database")
 const { uuid } = require('uuidv4');
 const status = require("../utils/constants/status")
+const error = require("../utils/error")
 
 async function createUser(request, logger){
-    try{
         logger.info("Business: createUser invoked")
         const {body} = request;
+        await validateRequest(request, logger)
         const document = prepareDocument(body, logger)
         const result = await data.createUserDocument(document, logger);
         if(result !== 0){
@@ -14,17 +15,12 @@ async function createUser(request, logger){
         else{
             return {data: "unable to add document", code: 400}
         }
-        
-    }catch(error){
-        console.log(error)
-        throw new Error("error in adding record")
-    }
 }
 
 async function validateRequest(request, logger){
     logger.info("Business: validateRequest invoked")
 
-    //validate input
+    throw new error.ValidationError("error from validation")
 
     //validate email regex
 

@@ -17,9 +17,9 @@ async function createUser(request, response){
     try{
         logger.info("createUser function invoked")
         const result = await userBusiness.createUser(request, logger);
-        successResponse(response, result.data, result.code, logger);
+        successResponse(response, result.data, logger, result.code);
     }catch(error){
-        logger.error("API error: error in createUser API "+error.message)
+        logger.error("API error: error in createUser API "+error)
         failureResponse(response, error.message, error.code, logger)
     }
 }
@@ -28,7 +28,18 @@ async function fetchUser(request, response){
     try{
         logger.info("fetchUser function invoked")
         const result = await userBusiness.fetchUser(request, logger);
-        successResponse(response, {users: result.data}, result.code, logger);
+        successResponse(response, {users: result.data}, logger);
+    }catch(error){
+        logger.error("API error: error in fetchUser API "+error.message)
+        failureResponse(response, error.message, error.code, logger)
+    }
+}
+
+async function fetchUserbyId(request, response){
+    try{
+        logger.info("fetchUserbyId function invoked")
+        const result = await userBusiness.fetchUserbyId(request, logger);
+        successResponse(response, result[0], logger);
     }catch(error){
         logger.error("API error: error in fetchUser API "+error.message)
         failureResponse(response, error.message, error.code, logger)
@@ -41,6 +52,8 @@ async function fetchUser(request, response){
 app.post(`${baseUrl}`, createUser)
 
 app.get(`${baseUrl}`, fetchUser)
+
+app.get(`${baseUrl}/:userId`, fetchUserbyId)
 
 /*app.put(`${baseUrl}`, updateUser)
 

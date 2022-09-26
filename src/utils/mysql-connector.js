@@ -44,7 +44,7 @@ async function fetchRecord(record, logger){
         return new Promise(resolve => {
             connection.query(record, function(err, results) {
                 if(err){
-                    throw new Error('Unable to fetch record')
+                    console.log("error in fetching record "+err)
                 }
                 resolve(results)
               });

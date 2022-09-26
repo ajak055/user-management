@@ -3,39 +3,35 @@ const { uuid } = require('uuidv4');
 const status = require("../utils/constants/status")
 
 async function fetchUser(request, logger){
-    try{
         logger.info("Business: fetchUser invoked")
-        await buildQuery(request, logger);
+        const dataQuery = await buildQuery(request, logger);
         
-        const result = await data.fetchUserDocument(null, logger);
-        if(result !== 0){
-            return {data: result, code: 201}
-        }
-        else{
-            return {data: "unable to add document", code: 400}
-        }
-        
-    }catch(error){
-        logger.error("Error in fetching record "+error)
-        throw new Error("error in adding record")
-    }
+        const result = await data.fetchUserDocument(dataQuery, logger);
+        return {data: result}      
 }
 
 async function buildQuery(request, logger){
     logger.info("Business: buildQuery invoked")
 
     const {query} = request;
-    const skip = query.skip? 0 : query.skip;
-    const limit = query.limit? 0 : query.limit;
-    
-    console.log(query)
-}
+    var queryString = `SELECT * FROM `+process.env.USER_TABLE
 
-function prepareDocument(body, logger){
-    logger.info("Business: prepareDocument invoked")
-    const value = [body.username, body.email, body.firstname, body.lastname, status.ENABLED, body.address, uuid()]
-    logger.info("inser doc "+value)
-    return value
+    if(query.status){
+        queryString += ` WHERE status=`+ parseInt(query.status)
+    }
+    if(!query.limit){
+        queryString += ` limit 5`
+    }else{
+        queryString += ` limit `+parseInt(query.limit)
+    }
+    if(!query.skip){
+        queryString += ` offset 0`
+    }
+    else{
+        queryString += ` offset ` + parseInt(query.skip)
+    }
+    logger.debug("query string "+queryString)    
+    return queryString
 }
 
 module.exports ={
