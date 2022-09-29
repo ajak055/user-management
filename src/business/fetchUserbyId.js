@@ -6,9 +6,7 @@ async function fetchUserbyId(request, logger){
         logger.info("Business: fetchUserbyId invoked")
         const dataQuery = await buildQuery(request, logger);
         
-        const result = await data.fetchUserDocument(dataQuery, logger);
-        console.log(result)
-    
+        const result = await data.fetchUserDocument(dataQuery, logger);    
         return result
 }
 

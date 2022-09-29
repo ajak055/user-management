@@ -15,7 +15,19 @@ async function fetchUserDocument(userRecord, logger){
     return await mysqldb.fetchRecord(userRecord, logger);
 }
 
+async function deleteUserDocument(userRecord, logger){
+    logger.info("Data: deleteUserDocument invoked")
+    return await mysqldb.deleteRecord(userRecord, logger);
+}
+
+async function updateUserDocument(userRecord, logger){
+    logger.info("Data: updateUserDocument invoked")
+    return await mysqldb.updateRecord(userRecord, logger);
+}
+
 module.exports = {
     createUserDocument,
-    fetchUserDocument
+    fetchUserDocument,
+    deleteUserDocument,
+    updateUserDocument
 }

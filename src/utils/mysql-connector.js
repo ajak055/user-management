@@ -1,4 +1,3 @@
-const e = require('express');
 const mysql = require('mysql2');
 const config = require("../utils/constants/database-constants")
 
@@ -48,12 +47,41 @@ async function fetchRecord(record, logger){
                 }
                 resolve(results)
               });
-        });
-
-        
+        });     
 }
+
+async function deleteRecord(record, logger){
+    logger.info("MYSQL: deleteRecord invoked")
+        const connection = await fetchConnectionString();
+        
+        return new Promise(resolve => {
+            connection.query(record, function(err, results) {
+                if(err){
+                    console.log("error in deleteRecord record "+err)
+                }
+                resolve(results)
+              });
+        });     
+}
+
+async function updateRecord(record, logger){
+    logger.info("MYSQL: updateRecord invoked")
+        const connection = await fetchConnectionString();
+        
+        return new Promise(resolve => {
+            connection.query(record, function(err, results) {
+                if(err){
+                    console.log("error in updateRecord record "+err)
+                }
+                resolve(results)
+              });
+        });     
+}
+
 
 module.exports = {
     insertRecord,
-    fetchRecord
+    fetchRecord,
+    deleteRecord,
+    updateRecord
 }

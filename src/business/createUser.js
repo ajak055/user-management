@@ -6,7 +6,6 @@ const error = require("../utils/error")
 async function createUser(request, logger){
         logger.info("Business: createUser invoked")
         const {body} = request;
-        await validateRequest(request, logger)
         const document = prepareDocument(body, logger)
         const result = await data.createUserDocument(document, logger);
         if(result !== 0){

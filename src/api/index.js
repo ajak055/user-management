@@ -46,6 +46,28 @@ async function fetchUserbyId(request, response){
     }
 }
 
+async function deleteUser(request, response){
+    try{
+        logger.info("deleteUser function invoked")
+        const result = await userBusiness.deleteUser(request, logger);
+        successResponse(response, result, logger);
+    }catch(error){
+        logger.error("API error: error in deleteUser API "+error.message)
+        failureResponse(response, error.message, error.code, logger)
+    }
+}
+
+async function updateUser(request, response){
+    try{
+        logger.info("updateUser function invoked")
+        const result = await userBusiness.updateUser(request, logger);
+        successResponse(response, result, logger);
+    }catch(error){
+        logger.error("API error: error in updateUser API "+error.message)
+        failureResponse(response, error.message, error.code, logger)
+    }
+}
+
 
 //routes
 
@@ -55,9 +77,9 @@ app.get(`${baseUrl}`, fetchUser)
 
 app.get(`${baseUrl}/:userId`, fetchUserbyId)
 
-/*app.put(`${baseUrl}`, updateUser)
+app.put(`${baseUrl}`, updateUser)
 
-app.delete(`${baseUrl}`, deleteUser) */
+app.delete(`${baseUrl}/:userId`, deleteUser) 
 
 
 app.listen(process.env.PORT, () => {
